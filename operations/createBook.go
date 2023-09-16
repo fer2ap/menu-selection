@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-func CreateMockBook(name string) {
+func CreateBook(name string) {
 	client := http.Client{}
 	url := "http://127.0.0.1:8080/books"
 	reqBody := Book{

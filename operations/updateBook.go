@@ -26,7 +26,6 @@ func UpdateBook(id int) {
 	checkError(err)
 
 	url = url.JoinPath(fmt.Sprint(id))
-	fmt.Println(url.String())
 
 	req, err := http.NewRequest("PUT", url.String(), bytes.NewReader(marshalled))
 	checkError(err)

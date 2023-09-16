@@ -8,6 +8,10 @@ import (
 	"strings"
 )
 
+const (
+	EXIT_OPTION = -1
+)
+
 func main() {
 	menuOptions := []string{"Create new book", "Get book by ID", "Get books", "Update a book", "Delete a book"}
 	var selected int
@@ -18,9 +22,9 @@ func main() {
 		case 0:
 			var name string
 			fmt.Println("Creating book. What's the name of the book?")
-			_, err := fmt.Scanln(&name)
+			_, err := fmt.Scan(&name)
 			checkError(err)
-			operations.CreateMockBook(name)
+			operations.CreateBook(name)
 		case 1:
 			bookId := printGetIdMenu()
 			operations.GetBookById(bookId)
@@ -29,21 +33,22 @@ func main() {
 			var page int
 			var size int
 			fmt.Println("What are you looking for?")
-			fmt.Scanln(&name)
+			fmt.Scan(&name)
 			printGetIntInput("Select a page: ", &page)
 			printGetIntInput("And select the number of entries: ", &size)
 			operations.GetBooks(page, size, name)
 		case 3:
 			bookId := printGetIdMenu()
 			operations.UpdateBook(bookId)
-		default:
-			fmt.Printf("You selected the create new book option: %s\n", menuOptions[selected])
+		case 4:
+			bookId := printGetIdMenu()
+			operations.DeleteBookById(bookId)
 		}
 		fmt.Println("Do you want to quit? [y]es/[n]o")
 		var quit string
 		fmt.Scanln(&quit)
 		if quit == "y" {
-			selected = -1
+			selected = EXIT_OPTION
 		}
 	}
 }
@@ -78,18 +83,24 @@ func printMenu(menuOptions *[]string) int {
 		fmt.Scanln(&newOption)
 		newSelection, err := strconv.Atoi(newOption)
 		if err != nil {
-			if strings.ToLower(newOption) == "ok" {
+			if strings.ToLower(newOption) == "ok" || strings.ToLower(newOption) == "" {
 				return selected
 			}
 			newSelection = lastOption
 		}
-		if newSelection > lastOption || newSelection < 0 {
+		if strings.ToLower(newOption) == "exit" {
+			exit = 0
+		}
+		if newSelection > lastOption {
 			selected = lastOption
+		}
+		if newSelection < 0 {
+			selected = 0
 		} else {
 			selected = newSelection
 		}
 	}
-	return selected
+	return EXIT_OPTION
 }
 
 func checkError(err error) {
