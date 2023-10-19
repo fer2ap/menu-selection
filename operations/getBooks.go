@@ -27,10 +27,9 @@ func GetBookById(bookId int) {
 	body, err := io.ReadAll(resp.Body)
 	checkError(err)
 	json.Unmarshal(body, &book)
-	fmt.Println("Status: ", resp.Status)
-	if resp.Status == "200" {
-		fmt.Println(book)
-	}
+	// fmt.Println("Status: ", resp.Status)
+	fmt.Println(book.Name)
+
 }
 
 func GetBooks(page int, size int, name string) {

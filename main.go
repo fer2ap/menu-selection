@@ -22,7 +22,8 @@ func main() {
 		case 0:
 			var name string
 			fmt.Println("Creating book. What's the name of the book?")
-			_, err := fmt.Scan(&name)
+			_, err := fmt.Scanf("%q", &name)
+			fmt.Println("Creating book: ", name)
 			checkError(err)
 			operations.CreateBook(name)
 		case 1:
